@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
-    private const string H_AXIS = "Horizontal";
-    private const string V_AXIS = "Vertical";
+    
     public int MoveSpeed = 5;
+    public GameManager gameManager;
 
     Rigidbody2D playerRigidbody;
     Animator animator;
 
     float h;
     float v;
+    bool hDown;
+    bool vDown;
+    bool hUp;
+    bool vUp;
+
     bool isHorizonMove;
     Vector3 directionVector;
     GameObject scanObject;
@@ -26,15 +31,8 @@ public class PlayerAction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // move value
-        h = Input.GetAxisRaw(H_AXIS);
-        v = Input.GetAxisRaw(V_AXIS);
-
-        // check button up/down
-        bool hDown = Input.GetButtonDown(H_AXIS);
-        bool vDown = Input.GetButtonDown(V_AXIS);
-        bool hUp = Input.GetButtonUp(H_AXIS);
-        bool vUp = Input.GetButtonUp(V_AXIS);
+        // get player input
+        gameManager.GetPlayerInput(out h, out v, out hDown, out vDown, out hUp,out vUp);
 
         // check horizontal move
         if (hDown)
@@ -82,7 +80,7 @@ public class PlayerAction : MonoBehaviour
         // scan object
         if (Input.GetButtonDown("Jump") && scanObject != null)
         {
-            Debug.Log("This is : " + scanObject.name);
+            gameManager.DialogAction(scanObject);
         }
     }
 
