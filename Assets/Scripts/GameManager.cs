@@ -13,14 +13,20 @@ public class GameManager : MonoBehaviour
     public Image portraitImage;
     public Text talkText;
     public TalkManager talkManager;
-    
+    public Animator talkPanelAnimator;
+    public Animator portraitAnimator;
+    public TypeEffect talkTextTypeEffect;
+
     bool isTalkDialogOpen;
 
     public void DialogAction(GameObject scanObject)
     {
         ObjectData objectData = scanObject.GetComponent<ObjectData>();
         Talk(objectData);
-        talkPanel.SetActive(isTalkDialogOpen);
+
+        // talk panel show/hide
+        // talkPanel.SetActive(isTalkDialogOpen);
+        talkPanelAnimator.SetBool("isShow", isTalkDialogOpen);
     }
 
     private void Talk(ObjectData objectData)
@@ -37,7 +43,9 @@ public class GameManager : MonoBehaviour
         if (objectData.isNpc)
         {
             Sprite portraitSprite = objectData.GetPortraitSprite(talk.talkEmotion);
-            portraitImage.sprite = portraitSprite;
+            if (portraitImage.sprite != portraitSprite)
+                portraitAnimator.SetTrigger("doEffect");
+                portraitImage.sprite = portraitSprite;
             portraitImage.color = new Color(1, 1, 1, 1);
         } 
         else
@@ -47,7 +55,8 @@ public class GameManager : MonoBehaviour
         }
 
         isTalkDialogOpen = true;
-        talkText.text = talk.talkString;
+        //talkText.text = talk.talkString;
+        talkTextTypeEffect.SetMessage(talk.talkString);
     }
 
     public void GetPlayerInput(out float h, out float v, out bool hDown, out bool vDown, out bool hUp, out bool vUp)
