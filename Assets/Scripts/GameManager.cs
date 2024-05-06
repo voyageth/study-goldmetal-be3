@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
 
     public void DialogAction(GameObject scanObject)
     {
+        if (talkTextTypeEffect.isAnimationOnProgress)
+        {
+            return;
+        }
+
         ObjectData objectData = scanObject.GetComponent<ObjectData>();
         Talk(objectData);
 

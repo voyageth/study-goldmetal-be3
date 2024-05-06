@@ -8,7 +8,8 @@ public class TypeEffect : MonoBehaviour
 {
     public int CharPerSeconds;
     public GameObject EndCursor;
-
+    
+    public bool isAnimationOnProgress;
     string targetMessage;
     Text messageText;
     AudioSource audioSource;
@@ -33,6 +34,7 @@ public class TypeEffect : MonoBehaviour
         EndCursor.SetActive(false);
 
         Invoke("EffectOnProgress", 1.0f / CharPerSeconds);
+        isAnimationOnProgress = true;
     }
 
     void EffectOnProgress()
@@ -57,6 +59,8 @@ public class TypeEffect : MonoBehaviour
     void EffectEnd()
     {
         CancelInvoke();
+        isAnimationOnProgress = false;
         EndCursor.SetActive(true);
+        this.targetMessage = null;
     }
 }
